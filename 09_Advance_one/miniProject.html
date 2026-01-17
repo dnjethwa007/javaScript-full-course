@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Enter your github id</h1>
+    <input type="text" id="github">
+    <button id="submit">Submit</button>
+</body>
+<script>
+    const input = document.getElementById("github")
+    const submit=document.getElementById("submit")
+    const h1 = document.createElement('h1');
+    const img = document.createElement('img');
+    img.style.width = "150px";
+    img.style.borderRadius = "50%"; // Makes it a circle
+    document.body.appendChild(h1);
+    document.body.appendChild(img);
+    
+    submit.addEventListener('click',(e)=>{
+        const name=input.value
+        console.log(name)
+        const requestUrl=`https://api.github.com/users/${name}`
+        const xhr=new XMLHttpRequest();
+        xhr.open('GET',requestUrl);
+        xhr.onreadystatechange=function(){
+            if(xhr.readyState===4 && xhr.status === 200){
+                const data=JSON.parse(xhr.responseText);
+                h1.innerHTML = data.name || "No name found";
+                img.src = data.avatar_url;
+                img.alt = `${username}'s profile picture`;
+            } else if (xhr.readyState === 4) {
+                h1.innerHTML = "User not found";
+                img.src = "";
+            }
+    
+        }
+        xhr.send();
+    })
+   
+    
+
+</script>
+</html>
